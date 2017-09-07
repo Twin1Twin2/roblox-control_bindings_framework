@@ -11,6 +11,47 @@
 local Signal    = require(script.Parent.Signal)
 
 
+-- // ERROR MANAGER // --
+
+local function ErrorManager(className, name)
+    local this  = {
+        ClassName   = className	or "";
+        Name        = name or "";
+        ErrorText   = "ERROR!";
+        WarnText    = "WARNING!";
+        PrintText   = "";
+    }
+
+    function this:Error(message, level)
+        level   = level	or 1
+        level   = level	+ 1
+        local errorMessage  = string.format("%s %s [%q]", self.ErrorText, self.ClassName)
+        if (message ~= nil) then
+            errorMessage    = errorMessage .. " :: " .. message
+        end
+        error(errorMessage, level)
+    end
+
+    function this:Warn(message)
+        local warnMessage  = string.format("%s %s [%q]", self.WarnText, self.ClassName)
+        if (message ~= nil) then
+            warnMessage = warnMessage .. " :: " .. message
+        end
+        warn(warnMessage)
+    end
+
+    function this:Print(message)
+        local printMessage  = string.format("%s %s [%q]", self.PrintText, self.ClassName)
+        if (message ~= nil) then
+            printMessage    = printMessage .. " :: " .. message
+        end
+        print(printMessage)
+    end
+	
+	return this
+end
+
+
 -- // CONSTANTS // --
 
 local RENDER_PRIORITY   = Enum.RenderPriority.Input.Value + 5;
@@ -22,7 +63,6 @@ local ActionBinding = {
     ClassName   = "ActionBinding";
 }
 
-
 --  HAS INPUT BINDING (  )
 --
 --
@@ -33,7 +73,7 @@ function ActionBinding:HasInputBinding(inputName)
     if (typeof(inputName) == "EnumItem") then
         inputName   = inputName.Name
     elseif (type(inputName) ~= "string") then
-        SendError("HasInputBinding(  ) - Argument [1] must be a string or EnumItem value!", 2)
+       self.ErrorManager("HasInputBinding(  ) - Argument [1] must be a string or EnumItem value!", 2)
     end
     for _, inputBinding in pairs(self.InputBindings) do
         if (inputBinding.Name == inputName) then
@@ -51,8 +91,8 @@ end
 --
 
 function ActionBinding:AddInputBinding(inputBinding)
-    if not (type(inputBinding) == "table" and inputBinding.ClassName == "InputBinding") then
-        SendError("AddInputBinding(  ) - Argument [1] is not an \"InputBinding\"", 2)
+    if not (type(inputBinding) == "table" and type(inputBinding.Input) == "number") then
+        self.ErrorManager("AddInputBinding(  ) - Argument [1] is not an \"InputBinding\"", 2)
     end
 	
     table.insert(self.InputBindings, inputBinding)
@@ -70,9 +110,9 @@ function ActionBinding:RemoveInputBinding(inputName)
     local functionName  = "RemoveInputBinding(  ) - "
     if (type(inputName) == "number") then
         if (inputName <= 0) then
-            SendError(functionName .. "Argument [1] must be greater than zero!", 2)
+            self.ErrorManager(functionName .. "Argument [1] must be greater than zero!", 2)
         elseif (inputName % 1 ~= 0) then
-            SendError(functionName .. "Argument [1] must be an integer!", 2)
+            self.ErrorManager(functionName .. "Argument [1] must be an integer!", 2)
         end
         table.remove(self.InputBindings, inputName)
     elseif (type(inputName) == "string") then
@@ -82,9 +122,9 @@ function ActionBinding:RemoveInputBinding(inputName)
                 return
             end
         end
-        SendError(functionName .. "Unable to remove InputBinding \"" .. inputName .. "\"")
+        self.ErrorManager(functionName .. "Unable to remove InputBinding \"" .. inputName .. "\"")
     else
-        SendError(functionName .. "Argument [1] is not a valid type! Must be either a string or unsigned integer!", 2)
+        self.ErrorManager(functionName .. "Argument [1] is not a valid type! Must be either a string or unsigned integer!", 2)
     end
 end
 
@@ -97,9 +137,9 @@ end
 
 function ActionBinding:SetInputAmount(amount)
     if (type(amount) ~= "number") then
-        SendError("SetInputAmount() - Argument [1] must be a number!", 2)
+        self.ErrorManager("SetInputAmount(  ) - Argument [1] must be a number!", 2)
     elseif (amount < 0 or amount > 1  then
-        SendError("SetInputAmount() - Argument [1] must be a number from 0 to 1! [1] = " .. tostring(amount), 2)
+        self.ErrorManager("SetInputAmount(  ) - Argument [1] must be a number from 0 to 1! [1] = " .. tostring(amount), 2)
     end
 	
     local currentAmount = self.InputAmount
@@ -187,8 +227,8 @@ function ActionBinding:Enable()
         SendError("Enable(  ) - Unable to enable Action Binding \"" .. self.Name .. "\"", 2)
     end
 
-    self.Active             = true
     self.UpdateFunctionName = updateFunctionName
+    self.Active             = true
 end
 
 
@@ -216,7 +256,7 @@ end
 
 function ActionBinding:new(actionBindingName)
     if (type(actionBindingName) ~= "string") then
-        --error
+        error("ActionBinding :: new(  ) - Argument [1] must be a string! Type [1] = " .. type(actionBindingName), 2)
     end
 
     local this = {
@@ -240,6 +280,8 @@ function ActionBinding:new(actionBindingName)
         InputUnmaxed        = Signal:new();     --Signal
 
         InputBindingAdded	= Signal:new();
+
+        ERROR_MANAGER       = ErrorManager(self.ClassName, actionBindingName);
     }
 
 
