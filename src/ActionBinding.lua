@@ -150,7 +150,7 @@ end
 --
 
 function ActionBinding:Update()
-	local inputAmount   = 0
+    local inputAmount   = 0
 	
 	for inputName, inputBinding in pairs(self.InputBindings) do
         if (inputBinding.Input > inputAmount) then
@@ -199,17 +199,17 @@ end
 
 function ActionBinding:new(actionBindingName)
     if (type(actionBindingName) ~= "string") then
-		--error
+        --error
     end
 
     local this = {
-        Name    = "";
+        Name            = actionBindingName;
 
-		InputAmount     = 0;
+        InputAmount     = 0;
 
-		Active          = false;
-		Down            = false;
-		InputWasChanged = false;
+        Active          = false;
+        Down            = false;
+        InputWasChanged = false;
 
         InputBindings   = {};
 
