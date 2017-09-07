@@ -9,7 +9,7 @@
 -- // MODULES // --
 
 local ActionBinding = require(script.ActionBinding)
-local InputBinding
+local InputBinding  = require(script.InputBinding)
 
 
 -- // MAIN CODE // --
@@ -17,6 +17,27 @@ local InputBinding
 local ControlBindingsFramework  = {
     ClassName   = "ControlBindingsFramework";
 }
+
+
+--  GET ACTION BINDING (  )
+--
+--
+--
+--
+
+function ControlBindingsFramework:GetActionBinding(actionBindingName)
+    if (type(actionBindingName) ~= "string") then
+        --error
+    end
+
+    for _, actionBinding in pairs(self.ActionBindings) do
+        if (actionBinding.Name == actionBindingName) then
+            return actionBinding
+        end
+    end
+
+    return nil
+end
 
 
 --  NEW (  )
