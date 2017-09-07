@@ -25,7 +25,7 @@ local function ErrorManager(className, name)
     function this:Error(message, level)
         level   = level	or 1
         level   = level	+ 1
-        local errorMessage  = string.format("%s %s [%q]", self.ErrorText, self.ClassName)
+        local errorMessage  = string.format("%s %s [%q]", self.ErrorText, self.ClassName, self.Name)
         if (message ~= nil) then
             errorMessage    = errorMessage .. " :: " .. message
         end
@@ -33,7 +33,7 @@ local function ErrorManager(className, name)
     end
 
     function this:Warn(message)
-        local warnMessage  = string.format("%s %s [%q]", self.WarnText, self.ClassName)
+        local warnMessage  = string.format("%s %s [%q]", self.WarnText, self.ClassName, self.Name)
         if (message ~= nil) then
             warnMessage = warnMessage .. " :: " .. message
         end
@@ -41,7 +41,7 @@ local function ErrorManager(className, name)
     end
 
     function this:Print(message)
-        local printMessage  = string.format("%s %s [%q]", self.PrintText, self.ClassName)
+        local printMessage  = string.format("%s %s [%q]", self.PrintText, self.ClassName, self.Name)
         if (message ~= nil) then
             printMessage    = printMessage .. " :: " .. message
         end
@@ -217,7 +217,7 @@ function ActionBinding:Enable()
     end
 
     local updateFunctionName    = self.Name .. "_Update-" .. tostring(tick())
-    local success, errorMessage = pcall(function(  )
+    local success, errorMessage = pcall(function()
         RunService:BindToRenderStep(updateFunctionName, Enum.RenderPriority.Input.Value + 5, function()
             self:Update()
         end)
