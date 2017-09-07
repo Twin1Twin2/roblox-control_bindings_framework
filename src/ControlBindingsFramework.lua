@@ -1,4 +1,4 @@
---[ TheEpicTwin ]--
+--[ TheEpicTwin (ROBLOX); Twin1Twin2 (GitHub) ]--
 
 -- // DESCRIPTION // --
 --
@@ -13,21 +13,21 @@
 
 -- // MAIN CODE // --
 
-local ControlBindingsFramework = {
-    ClassName = "ControlBindingsFramework";
+local ControlBindingsFramework  = {
+    ClassName   = "ControlBindingsFramework";
 }
 
 
 function ControlBindingsFramework:new()
-    local this = {
-        ActionBindings = {};
-        InputBindings = {};
+    local this  = {
+        ActionBindings  = {};
+        InputBindings   = {};
 
-        Ready = false;
+        Ready   = false;
     }
     
 
-    self.__index = self
+    self.__index    = self
     setmetatable(this, self)
 
 
