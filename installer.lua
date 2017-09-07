@@ -13,15 +13,19 @@
 
 -- // SERIVCES // --
 
-local HttpService   = game:GetService("HttpService")
+local HttpService       = game:GetService("HttpService")
+local SelectionService  = game:GetService("Selection")
 
 
 -- // MAIN CODE // --
 
 local FILELIST_URL  = ""
 
+local MODULE_NAME       = "ControlBindingsFramework"
+local DEFAULT_PARENT    = game.Workspace
 
-local httpEnabled   = http.HttpEna  bled
+
+local httpEnabled   = http.HttpEnabled
 HttpService.HttpEnabled = true
 
 local function CreateModuleScript(scriptName, sourceURL)
@@ -42,12 +46,19 @@ local moduleExtension   = fileList.modules_folder
 local mainPath          = fileList.main
 local modulesPaths      = fileList.modules
 
-
+local mainModule    = CreateModuleScript(MODULE_NAME, URL .. mainPath)
 
 
 for _, module in pairs(modulesPaths) do
+    local sourceURL     = URL .. moduleExtension .. modules
+    local scriptName    = module:match()
 
+    local moduleScript  = CreateModuleScript(scriptName, sourceURL)
+        moduleScript.Parent = mainModule
 end
 
+mainModule.Parent   = DEFAULT_PARENT
+
+Selection:Set({mainModule})     --needs some testing to see if it works
 
 HttpService.HttpEnabled = httpEnabled
