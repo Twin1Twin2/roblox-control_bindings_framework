@@ -8,7 +8,8 @@
 
 -- // MODULES // --
 
-
+local ActionBinding = require(script.ActionBinding)
+local InputBinding
 
 
 -- // MAIN CODE // --
