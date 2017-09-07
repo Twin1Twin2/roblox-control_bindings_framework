@@ -217,7 +217,7 @@ function ActionBinding:Enable()
     end
 
     local updateFunctionName    = self.Name .. "_Update-" .. tostring(tick())
-    local success, errorMessage = pcall(function(  )
+    local success, errorMessage = pcall(function()
         RunService:BindToRenderStep(updateFunctionName, Enum.RenderPriority.Input.Value + 5, function()
             self:Update()
         end)
