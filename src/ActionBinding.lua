@@ -208,20 +208,19 @@ function ActionBinding:new(actionBindingName)
 
         InputBindings	= {};
 
-        InputDown		= nil;		--Signal
-        InputBegan		= nil;		--Signal
-        InputEnded		= nil;		--Signal
-        InputChanged	= nil;		--Signal
-		InputMaxed		= nil;		--Signal
-		InputUnmaxed	= nil;		--Signal
+        InputDown		= Signal:new();		--Signal
+        InputBegan		= Signal:new();		--Signal
+        InputEnded		= Signal:new();		--Signal
+        InputChanged	= Signal:new();		--Signal
+		InputMaxed		= Signal:new();		--Signal
+		InputUnmaxed	= Signal:new();		--Signal
 
-		InputBindingAdded	= nil;
+		InputBindingAdded	= Signal:new();
     }
 
 
     self.__index = self
     setmetatable(this, self)
-
 
     return this
 end
