@@ -45,4 +45,42 @@ function ControlBindingsFramework:GetActionBinding(actionBindingName)
 end
 
 
+-- ADD ACTION BINDING (  )
+--
+--
+--
+--
+
+function ControlBindingsFramework:AddActionBinding(actionBindingName, enable)
+    if (type(actionBindingName) ~= "string") then
+        --error
+    end
+
+    if (enable ~= nil and type(enable) ~= "bool") then
+        --error
+    end
+
+    local actionBindingObject   = self:GetActionBinding(actionBindingName)
+
+    if (actionBindingObject ~= nil) then
+        if (enable == true) then
+            actionBindingObject:Enable()
+        end
+        
+        return actionBindingObject
+    end
+
+    actionBindingObject = ActionBinding:new(actionBindingName)
+
+    table.insert(self.ActionBindings, actionBindingObject)
+
+    if (enable == true) then
+        actionBindingObject:Enable()
+    end
+
+    return actionBindingObject
+end
+
+
+
 return ControlBindingsFramework
