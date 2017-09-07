@@ -175,6 +175,20 @@ function ActionBinding:Enable()
     if (self.Active == true) then
         return
     end
+
+    local updateFunctionName    = self.Name .. "_Update-" .. tostring(tick())
+    local success, errorMessage = pcall(function(  )
+        RunService:BindToRenderStep(updateFunctionName, Enum.RenderPriority.Input.Value + 5, function()
+            self:Update()
+        end)
+    end)
+
+    if (success == false) then
+        SendError("Enable(  ) - Unable to enable Action Binding \"" .. self.Name .. "\"", 2)
+    end
+
+    self.Active             = true
+    self.UpdateFunctionName = updateFunctionName
 end
 
 
@@ -188,6 +202,9 @@ function ActionBinding:Disable()
     if (self.Active == false) then
         return
     end
+
+    RunService:UnbindFromRenderStep(self.UpdateFunctionName)
+    self.Active	= false
 end
 
 
@@ -203,22 +220,24 @@ function ActionBinding:new(actionBindingName)
     end
 
     local this = {
-        Name            = actionBindingName;
+        Name                = actionBindingName;
 
-        InputAmount     = 0;
+        UpdateFunctionName  = "";
 
-        Active          = false;
-        Down            = false;
-        InputWasChanged = false;
+        InputAmount         = 0;
 
-        InputBindings   = {};
+        Active              = false;
+        Down                = false;
+        InputWasChanged     = false;
 
-        InputDown       = Signal:new();     --Signal
-        InputBegan      = Signal:new();     --Signal
-        InputEnded      = Signal:new();     --Signal
-        InputChanged    = Signal:new();     --Signal
-        InputMaxed      = Signal:new();     --Signal
-        InputUnmaxed    = Signal:new();     --Signal
+        InputBindings       = {};
+
+        InputDown           = Signal:new();     --Signal
+        InputBegan          = Signal:new();     --Signal
+        InputEnded          = Signal:new();     --Signal
+        InputChanged        = Signal:new();     --Signal
+        InputMaxed          = Signal:new();     --Signal
+        InputUnmaxed        = Signal:new();     --Signal
 
         InputBindingAdded	= Signal:new();
     }
