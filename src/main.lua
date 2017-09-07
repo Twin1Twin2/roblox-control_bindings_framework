@@ -16,6 +16,11 @@ local InputBinding  = require(script.InputBinding)
 
 local ControlBindingsFramework  = {
     ClassName   = "ControlBindingsFramework";
+
+    ActionBindings  = {};
+    InputBindings   = {};
+
+    Ready   = false;
 }
 
 
@@ -39,27 +44,5 @@ function ControlBindingsFramework:GetActionBinding(actionBindingName)
     return nil
 end
 
-
---  NEW (  )
---
---
---
---
-
-function ControlBindingsFramework:new()
-    local this  = {
-        ActionBindings  = {};
-        InputBindings   = {};
-
-        Ready   = false;
-    }
-    
-
-    self.__index    = self
-    setmetatable(this, self)
-
-
-    return this
-end
 
 return ControlBindingsFramework
