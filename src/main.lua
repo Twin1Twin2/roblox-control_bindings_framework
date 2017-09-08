@@ -45,7 +45,7 @@ local function ERROR_MANAGER(className)
         local printMessage  = string.format("%s %s [%q]", self.PrintText, self.ClassName)
         if (message ~= nil) then
             printMessage    = printMessage .. " :: " .. message
-        end
+        end+
         print(printMessage)
     end
 	
