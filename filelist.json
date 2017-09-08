@@ -5,6 +5,6 @@
     "modules" : [
         "Signal.lua",
         "ActionBinding.lua",
-        "InputBinding.lua",
+        "InputBinding.lua"
     ]
 }
