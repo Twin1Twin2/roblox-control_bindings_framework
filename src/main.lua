@@ -45,7 +45,7 @@ local function ERROR_MANAGER(className)
         local printMessage  = string.format("%s %s [%q]", self.PrintText, self.ClassName)
         if (message ~= nil) then
             printMessage    = printMessage .. " :: " .. message
-        end
+        end+
         print(printMessage)
     end
 	
@@ -58,13 +58,34 @@ end
 local ControlBindingsFramework  = {
     ClassName   = "ControlBindingsFramework";
 
-    ActionBindings  = {};
-    InputBindings   = {};
+    ActionBindings      = {};
+    ActionBindingsList  = {};
 
     Ready   = false;
 }
 
 local ErrorManager  = ERROR_MANAGER:new(ControlBindingsFramework.ClassName)
+
+
+--  IS ACTION DOWN (  )
+--
+--
+--
+--
+
+function ControlBindingsFramework:IsActionDown(actionBindingName)
+    if (type(actionBindingName) ~= "string") then
+        ErrorManager:Error("IsActionDown(  ) - Argument [1] must be a string! Type [1] = " .. type(actionBindingName), 2)
+    end
+
+    local actionBindingObject   = self:GetActionBinding(actionBindingName)
+
+    if (actionBindingObject ~= nil) then
+        return actionBindingObject.Down
+    end
+
+    return false
+end
 
 
 --  GET ACTION BINDING (  )
@@ -78,17 +99,17 @@ function ControlBindingsFramework:GetActionBinding(actionBindingName)
         ErrorManager:Error("GetActionBinding(  ) - Argument [1] must be a string! Type [1] = " .. type(actionBindingName), 2)
     end
 
-    for _, actionBinding in pairs(self.ActionBindings) do
-        if (actionBinding.Name == actionBindingName) then
-            return actionBinding
-        end
+    local actionBindingObject   = self.ActionBindings[actionBindingName]
+
+    if (actionBindingObject ~= nil) then
+        return actionBindingObject
     end
 
     return nil
 end
 
 
--- ADD ACTION BINDING (  )
+--  ADD ACTION BINDING (  )
 --
 --
 --
@@ -115,7 +136,9 @@ function ControlBindingsFramework:AddActionBinding(actionBindingName, enable)
 
     actionBindingObject = ActionBinding:new(actionBindingName)
 
-    table.insert(self.ActionBindings, actionBindingObject)
+    self.ActionBindings[actionBindingName]  = actionBindingObject
+
+    table.insert(self.ActionBindingsList, actionBindingObject)
 
     if (enable == true) then
         actionBindingObject:Enable()
@@ -123,7 +146,6 @@ function ControlBindingsFramework:AddActionBinding(actionBindingName, enable)
 
     return actionBindingObject
 end
-
 
 
 return ControlBindingsFramework
