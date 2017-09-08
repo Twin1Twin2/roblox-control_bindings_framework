@@ -4,6 +4,7 @@
     "main" : "main.lua",
     "modules" : [
         "Signal.lua",
-        "ActionBinding.lua"
+        "ActionBinding.lua",
+        "InputBinding.lua",
     ]
 }

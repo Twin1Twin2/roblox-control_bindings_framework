@@ -29,7 +29,7 @@ function InputBinding:new(name)
     setmetatable(this, self)
 
 
-    return this
+    return this 
 end
 
 
