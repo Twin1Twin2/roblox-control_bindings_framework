@@ -6,6 +6,13 @@
 --
 --
 
+
+-- // SERVICES AND LIBRARIES // --
+
+local UserInputService      = game:GetService("UserInputService")
+local ContextActionService  = game:GetService("ContextActionService")
+
+
 -- // MODULES // --
 
 local ActionBinding = require(script.ActionBinding)
